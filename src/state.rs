@@ -23,13 +23,13 @@ impl State {
             .collect();
 
         let mut default_delta = HashMap::new();
-        for x in 10..=40 {
+        for x in 18..=22 {
             default_delta.insert(x * 100, 1);
             default_delta.insert(x * 100 + 33, 1);
             default_delta.insert(x * 100 + 67, 1);
         }
-        default_delta.insert(2000, 10);
-        default_delta.insert(100, 5);
+        default_delta.insert(2000, 1);
+        default_delta.insert(100, 1);
 
         let deltas = media_types
             .iter()
