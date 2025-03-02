@@ -3,7 +3,7 @@ use reqwest::header::HeaderName;
 use reqwest::{Client, Url};
 use serde::Deserialize;
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct Mpd {
     #[serde(rename = "Period")]
     period: Period,
@@ -17,13 +17,13 @@ pub struct Mpd {
     pub finished: bool,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 struct Period {
     #[serde(rename = "AdaptationSet")]
     adaptation_sets: Vec<AdaptationSet>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 #[allow(dead_code)]
 struct AdaptationSet {
@@ -34,7 +34,7 @@ struct AdaptationSet {
     max_frame_rate: Option<usize>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct Representation {
     #[serde(rename = "SegmentTemplate")]
     pub segment_template: SegmentTemplate,
@@ -50,7 +50,7 @@ pub struct Representation {
     pub bandwidth: usize,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct SegmentTemplate {
     #[serde(rename = "SegmentTimeline")]
     pub segment_timeline: SegmentTimeline,
@@ -60,13 +60,13 @@ pub struct SegmentTemplate {
     pub media_path: String,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct SegmentTimeline {
     #[serde(rename = "S")]
     pub segments: Vec<Segment>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct Segment {
     #[serde(rename = "@t")]
     pub t: usize,

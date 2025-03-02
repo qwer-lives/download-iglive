@@ -36,6 +36,10 @@ struct Download {
     /// Don't download past segments
     #[clap(short, long)]
     live_only: bool,
+    
+    /// Number of past segments to check in parallel
+    #[clap(short, long, default_value = "10")]
+    parallel_candidates: usize,
 }
 
 /// Merge an already downloaded live stream into one file
@@ -65,7 +69,8 @@ async fn run(args: Args) -> Result<()> {
             };
             let config = DownloadConfig {
                 dir: d.output,
-                segments,
+                segments: segments,
+                parallel_candidates: d.parallel_candidates,
             };
 
             // Download live stream

@@ -33,6 +33,9 @@ pub struct DownloadConfig {
 
     /// Choose whether to download live segments or past segments.
     pub segments: DownloadSegments,
+    
+    /// Number of past segments to check in parallel
+    pub parallel_candidates: usize,
 }
 
 bitflags! {
@@ -140,6 +143,7 @@ pub async fn download(mpd_url: impl IntoUrl, config: DownloadConfig) -> Result<P
             [(video_rep, pb_video), (audio_rep, pb_audio)],
             manifest.start_frame,
             &dir_name,
+            config.parallel_candidates,
         )));
     }
     future::join_all(futures)
