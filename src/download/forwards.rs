@@ -22,9 +22,7 @@ pub async fn download_forwards(
     // Set up 2 second interval
     let mut interval = time::interval(Duration::from_millis(1000));
     interval.set_missed_tick_behavior(time::MissedTickBehavior::Delay);
-    let mut prev_latest_video_t = 0;
-    let mut prev_latest_audio_t = 0;
-
+    
     let ret = loop {
         // Wait for interval
         interval.tick().await;
@@ -60,32 +58,6 @@ pub async fn download_forwards(
             latest_video_t, latest_audio_t
         ));
         pb.tick();
-
-        // Update deltas
-        if prev_latest_video_t > 0 && prev_latest_video_t < latest_video_t {
-            let video_delta: isize = (latest_video_t - prev_latest_video_t) as isize;
-            *state
-                .lock()
-                .await
-                .deltas
-                .get_mut(&MediaType::Video)
-                .unwrap()
-                .entry(video_delta)
-                .or_insert(0) += 1;
-        }
-        if prev_latest_audio_t > 0 && prev_latest_audio_t < latest_audio_t {
-            let audio_delta: isize = (latest_audio_t - prev_latest_audio_t) as isize;
-            *state
-                .lock()
-                .await
-                .deltas
-                .get_mut(&MediaType::Audio)
-                .unwrap()
-                .entry(audio_delta)
-                .or_insert(0) += 1;
-        }
-        prev_latest_video_t = latest_video_t;
-        prev_latest_audio_t = latest_audio_t;
         
         // Finish if stream ended
         if manifest.finished {

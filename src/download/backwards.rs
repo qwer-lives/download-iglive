@@ -118,7 +118,7 @@ async fn download_backwards(
                         state.clone(),
                         &client,
                         media_type,
-                        true,
+                        (skipped_segments == 0), // ignore PTS check if we've lost previous segment(s)
                         &url,
                         filename,
                     )
@@ -203,7 +203,7 @@ async fn find_next_candidates(
             let potential_candidates = [latest_t - (delta + offset), latest_t - (delta - offset)];
             for &candidate_t in &potential_candidates {
                 if candidate_t > lower_bound && candidate_t < latest_t && !visited.contains(&candidate_t) {
-                    candidates.push((candidate_t, (latest_t - candidate_t).abs()));
+                    candidates.push((candidate_t, latest_t - candidate_t));
                     visited.insert(candidate_t);
                     if candidates.len() >= parallel_candidates {
                         return candidates;
