@@ -38,6 +38,11 @@ impl State {
             default_delta.insert(x * 100 + 33, 1);
             default_delta.insert(x * 100 + 67, 1);
         }
+        for x in 70..=90 {
+            default_delta.insert(x * 100, 1);
+            default_delta.insert(x * 100 + 33, 1);
+            default_delta.insert(x * 100 + 67, 1);
+        }
         default_delta.insert(2000, 100);
         default_delta.insert(100, 2);
 
