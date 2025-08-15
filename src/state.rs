@@ -25,18 +25,18 @@ impl State {
         let mut default_delta = HashMap::new();
         for x in 16..=24 {
             default_delta.insert(x * 100, 10);
-            default_delta.insert(x * 100 + 33, 2);
-            default_delta.insert(x * 100 + 67, 2);
+            default_delta.insert(x * 100 + 33, 3);
+            default_delta.insert(x * 100 + 67, 3);
         }
         for x in 10..=15 {
             default_delta.insert(x * 100, 1);
-            default_delta.insert(x * 100 + 33, 1);
-            default_delta.insert(x * 100 + 67, 1);
+            default_delta.insert(x * 100 + 33, 2);
+            default_delta.insert(x * 100 + 67, 2);
         }
         for x in 25..=30 {
             default_delta.insert(x * 100, 1);
-            default_delta.insert(x * 100 + 33, 1);
-            default_delta.insert(x * 100 + 67, 1);
+            default_delta.insert(x * 100 + 33, 2);
+            default_delta.insert(x * 100 + 67, 2);
         }
         for x in 70..=90 {
             default_delta.insert(x * 100, 1);
@@ -44,7 +44,7 @@ impl State {
             default_delta.insert(x * 100 + 67, 1);
         }
         default_delta.insert(2000, 100);
-        default_delta.insert(100, 2);
+        default_delta.insert(100, 3);
 
         let deltas = media_types
             .iter()

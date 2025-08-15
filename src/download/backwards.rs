@@ -159,9 +159,8 @@ async fn download_backwards(
                                 IgLiveError::StatusNotFound => (),
                                 IgLiveError::PtsTooEarly => {
                                     pb.println(format!(
-                                        "{media_type:?} Found but PTS too early, adjusting lower bound to {candidate_t} - offset {delta}"
+                                        "{media_type:?} Found {candidate_t} with offset {delta} but PTS too early, saving"
                                     ));
-                                    lower_bound = candidate_t;
                                     pts_too_early_segments.insert(candidate_t);
                                 }
                                 _ => pb.println(format!("Download failed: {e:?}")),
