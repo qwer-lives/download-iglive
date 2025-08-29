@@ -3,10 +3,12 @@ use reqwest::header::HeaderName;
 use reqwest::{Client, Url};
 use serde::Deserialize;
 
+use crate::error::IgLiveError;
+
 #[derive(Deserialize, Debug, Clone)]
 pub struct Mpd {
     #[serde(rename = "Period")]
-    period: Period,
+    period: Option<Period>,
     #[serde(rename = "@loapStreamId")]
     pub id: String,
 
@@ -91,23 +93,27 @@ impl Mpd {
         Ok(manifest)
     }
 
-    pub fn best_media(&self) -> (&Representation, &Representation) {
+    pub fn best_media(&self) -> Result<(&Representation, &Representation)> {
+        let period = self.period.as_ref().ok_or(IgLiveError::EmptyManifest)?;
         let mut cur_video_bandwidth = 0;
         let mut cur_audio_bandwidth = 0;
-        let mut ret = (None, None);
-        for a in &self.period.adaptation_sets {
+        let mut ret: (Option<&Representation>, Option<&Representation>) = (None, None);
+        for a in &period.adaptation_sets {
             for r in &a.representations {
                 if r.mime_type.starts_with("video") && r.bandwidth > cur_video_bandwidth {
                     cur_video_bandwidth = r.bandwidth;
-                    ret = (Some(r), ret.1);
+                    ret.0 = Some(r);
                 }
                 if r.mime_type.starts_with("audio") && r.bandwidth > cur_audio_bandwidth {
                     cur_audio_bandwidth = r.bandwidth;
-                    ret = (ret.0, Some(r));
+                    ret.1 = Some(r);
                 }
             }
         }
-        (ret.0.unwrap(), ret.1.unwrap())
+        match ret {
+            (Some(video), Some(audio)) => Ok((video, audio)),
+            _ => Err(IgLiveError::EmptyManifest.into()),
+        }
     }
 }
 

@@ -63,7 +63,7 @@ pub async fn download(mpd_url: impl IntoUrl, config: DownloadConfig) -> Result<P
     // Download manifest
     let url_base = mpd_url.into_url()?;
     let manifest = Mpd::download_from_url(&client, url_base.clone()).await?;
-    let (video_rep, audio_rep) = manifest.best_media();
+    let (video_rep, audio_rep) = manifest.best_media()?;
 
     // Create directory
     let base_dir_name: PathBuf = if let Some(d) = config.dir {

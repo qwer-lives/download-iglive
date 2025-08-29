@@ -12,4 +12,6 @@ pub enum IgLiveError {
     FfmpegFail,
     #[error("PTS too early")]
     PtsTooEarly,
+    #[error("MPD manifest is empty or does not contain any media periods")]
+    EmptyManifest,
 }

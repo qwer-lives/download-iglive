@@ -62,7 +62,7 @@ async fn download_backwards(
 
     while latest_t > start_frame as isize {
         let candidates =
-            find_next_candidates(&state, &media_type, latest_t, &mut visited, lower_bound, &pb, parallel_candidates).await;
+            find_next_candidates(&state, &media_type, latest_t, &mut visited, lower_bound, parallel_candidates).await;
 
         if candidates.is_empty() {
             // No candidate found.  Assume a segment is missing *here*.
@@ -138,7 +138,6 @@ async fn download_backwards(
         // Process the results of the download tasks.
         let results: Vec<Result<(isize, isize, Result<()>)>> = download_tasks.collect().await;
 
-        let mut downloaded_any = false;
         for result in results {
             match result {
                 Ok((candidate_t, delta, download_result)) => match download_result {
@@ -185,7 +184,6 @@ async fn find_next_candidates(
     latest_t: isize,
     visited: &mut BTreeSet<isize>,
     lower_bound: isize,
-    pb: &ProgressBar,
     parallel_candidates: usize,
 ) -> Vec<(isize, isize)> {
     let search_range = 1000;

@@ -29,7 +29,7 @@ pub async fn download_forwards(
 
         // Download manifest
         let manifest = Mpd::download_from_url(client, url_base).await?;
-        let (video_rep, audio_rep) = manifest.best_media();
+        let (video_rep, audio_rep) = manifest.best_media()?;
 
         // Find last segments downloaded
         let (latest_video_t, latest_audio_t) = {
