@@ -47,7 +47,7 @@ pub async fn download_forwards(
         future::join_all(futures)
             .await
             .into_iter()
-            .collect::<Result<_>>()?;
+            .collect::<Result<()>>()?;
 
         check_overlap(video_rep, latest_video_t, &pb);
         check_overlap(audio_rep, latest_audio_t, &pb);

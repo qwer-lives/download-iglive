@@ -149,7 +149,7 @@ pub async fn download(mpd_url: impl IntoUrl, config: DownloadConfig) -> Result<P
     future::join_all(futures)
         .await
         .into_iter()
-        .collect::<Result<_>>()?;
+        .collect::<Result<()>>()?;
 
     Ok(base_dir_name)
 }
@@ -173,7 +173,7 @@ async fn download_reps(
     future::join_all(futures)
         .await
         .into_iter()
-        .collect::<Result<_>>()?;
+        .collect::<Result<()>>()?;
 
     if let Some(pb) = pb.as_ref() {
         pb.finish_with_message("Finished");

@@ -28,7 +28,7 @@ pub async fn download_reps_init(
     future::join_all(futures)
         .await
         .into_iter()
-        .collect::<Result<_>>()?;
+        .collect::<Result<()>>()?;
 
     if let Some(pb) = pb.as_ref() {
         pb.finish_with_message("Finished");

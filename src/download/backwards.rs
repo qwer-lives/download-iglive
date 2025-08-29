@@ -9,7 +9,6 @@ use futures::stream::{self, StreamExt};
 use indicatif::ProgressBar;
 use reqwest::{Client, Url};
 use tokio::sync::{Mutex, Semaphore};
-use tokio::task::JoinError;
 
 use super::download_file;
 use crate::error::IgLiveError;
@@ -118,7 +117,7 @@ async fn download_backwards(
                         state.clone(),
                         &client,
                         media_type,
-                        (skipped_segments == 0), // ignore PTS check if we've lost previous segment(s)
+                        skipped_segments == 0, // ignore PTS check if we've lost previous segment(s)
                         &url,
                         filename,
                     )
