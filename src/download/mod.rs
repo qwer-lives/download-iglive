@@ -58,7 +58,7 @@ bitflags! {
 /// * `mpd_url` - Full URL of live stream's .mpd manifest.
 pub async fn download(mpd_url: impl IntoUrl, config: DownloadConfig) -> Result<PathBuf> {
     // Reqwest client
-    let client = Client::builder().timeout(Duration::from_secs(5)).build()?;
+    let client = Client::builder().timeout(Duration::from_secs(10)).build()?;
 
     // Download manifest
     let url_base = mpd_url.into_url()?;
